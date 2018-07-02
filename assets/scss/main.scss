@@ -1,0 +1,36 @@
+fieldset {
+    border-style: dashed;
+    border-color: var(--dark);
+    border-width: 2px;
+    padding: 1em;
+    margin: 3vh 0;
+    height: 100%;
+}
+
+legend {
+    background-color: var(--dark);
+    color: white;
+    padding: 1rem;
+    margin: 2rem;
+}
+
+input:focus {
+    outline: none;
+}
+
+.login {
+    resize: both;
+}
+
+#uname {
+    width: 50%;
+    margin: 0 auto;
+}
+
+// Small devices (landscape phones, 300px and up)
+@media (min-width: 300px) {
+}
+
+// Medium devices (tablets, 600px and up)
+@media (min-width: 600px) {
+}

@@ -1,0 +1,25 @@
+{
+  "name": "rps",
+  "version": "1.0.0",
+  "description": "Multiplayer Rock Paper Scissors game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass": "node-sass assets/scss/ -o assets/css/",
+    "sass:watch": "npm run sass && node-sass assets/scss/ -wo assets/css/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/t-d-o-g/rps.git"
+  },
+  "keywords": [],
+  "author": "Travis Collins",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/t-d-o-g/rps/issues"
+  },
+  "homepage": "https://github.com/t-d-o-g/rps#readme",
+  "devDependencies": {
+    "node-sass": "^4.9.0"
+  }
+}
