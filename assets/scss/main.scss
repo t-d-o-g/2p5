@@ -1,3 +1,19 @@
+$leet-speak: LeetSpeak;
+
+@font-face {
+    font-family: LeetSpeak;
+    src: url('../fonts/LeetSpeak.woff') format('woff'), /* Modern Browsers */
+         url('../fonts/LeetSpeak.ttf')  format('truetype'), /* Safari, Android, iOS */
+         url('../fonts/LeetSpeak.svg#svgFontName') format('svg'); /* Legacy iOS */
+}
+
+body {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border-style: dashed;
+}
+
 fieldset {
     border-style: dashed;
     border-color: var(--dark);
@@ -8,6 +24,7 @@ fieldset {
 }
 
 legend {
+    font-family: $leet-speak;
     background-color: var(--dark);
     color: white;
     padding: 1rem;
@@ -22,9 +39,26 @@ input:focus {
     resize: both;
 }
 
+.invalid-feedback {
+    font-family: $leet-speak;
+}
+
+.page-header {
+    font-family: $leet-speak;
+}
+
+.footer {
+    font-family: $leet-speak;
+}
+
 #uname {
+    font-family: $leet-speak;
     width: 50%;
     margin: 0 auto;
+}
+
+#submit-btn {
+    font-family: $leet-speak;
 }
 
 // Small devices (landscape phones, 300px and up)
