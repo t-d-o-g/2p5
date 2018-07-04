@@ -1,4 +1,5 @@
 $leet-speak: LeetSpeak;
+$bs-default: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
 @font-face {
     font-family: LeetSpeak;
@@ -8,6 +9,7 @@ $leet-speak: LeetSpeak;
 }
 
 body {
+    font-family: LeetSpeak;
     position: absolute;
     height: 100%;
     width: 100%;
@@ -15,16 +17,12 @@ body {
 }
 
 fieldset {
-    border-style: dashed;
-    border-color: var(--dark);
-    border-width: 2px;
     padding: 1em;
     margin: 3vh 0;
     height: 100%;
 }
 
 legend {
-    font-family: $leet-speak;
     background-color: var(--dark);
     color: white;
     padding: 1rem;
@@ -39,27 +37,21 @@ input:focus {
     resize: both;
 }
 
-.invalid-feedback {
-    font-family: $leet-speak;
+.page-header h1 {
+    position: relative;
+    margin: auto;
+
 }
 
-.page-header {
-    font-family: $leet-speak;
-}
-
-.footer {
-    font-family: $leet-speak;
+.btn:focus {
+    box-shadow: none !important;
 }
 
 #uname {
-    font-family: $leet-speak;
     width: 50%;
     margin: 0 auto;
 }
 
-#submit-btn {
-    font-family: $leet-speak;
-}
 
 // Small devices (landscape phones, 300px and up)
 @media (min-width: 300px) {

@@ -9,13 +9,13 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" href="assets/css/main.css" onerror="sheetError()">
         <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase-database.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase-messaging.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase-firestore.js"></script>
     </head>
 
     <body>
         <header>
-            <div class="page-header text-center bg-primary">
+            <div class="d-flex page-header bg-primary justify-content-start">
+                <button type="submit" class="btn btn-primary" id="leet-btn">Deleet</button>
                 <h1>Rock Paper Scissors</h1>
             </div>
         </header>
@@ -30,6 +30,7 @@
                                 <input type="text" class="form-control" id="uname" name="uname" placeholder="Bob" required>
                                 <div class="invalid-feedback">Name required</div>
                                 <button type="submit" class="btn btn-primary m-4" id="submit-btn">Submit</button>
+                                <button type="submit" class="btn btn-primary" id="delete-btn">Delete</button>
                             </fieldset>
                         </div>
                     </div>

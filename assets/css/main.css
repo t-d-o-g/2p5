@@ -4,21 +4,18 @@
   /* Legacy iOS */ }
 
 body {
+  font-family: LeetSpeak;
   position: absolute;
   height: 100%;
   width: 100%;
   border-style: dashed; }
 
 fieldset {
-  border-style: dashed;
-  border-color: var(--dark);
-  border-width: 2px;
   padding: 1em;
   margin: 3vh 0;
   height: 100%; }
 
 legend {
-  font-family: LeetSpeak;
   background-color: var(--dark);
   color: white;
   padding: 1rem;
@@ -30,19 +27,13 @@ input:focus {
 .login {
   resize: both; }
 
-.invalid-feedback {
-  font-family: LeetSpeak; }
+.page-header h1 {
+  position: relative;
+  margin: auto; }
 
-.page-header {
-  font-family: LeetSpeak; }
-
-.footer {
-  font-family: LeetSpeak; }
+.btn:focus {
+  box-shadow: none !important; }
 
 #uname {
-  font-family: LeetSpeak;
   width: 50%;
   margin: 0 auto; }
-
-#submit-btn {
-  font-family: LeetSpeak; }
