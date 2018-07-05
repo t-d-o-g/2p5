@@ -47,9 +47,14 @@ input:focus {
     box-shadow: none !important;
 }
 
+.login {
+    display: none;
+}
+
 .game {
     display: none;
     background: var(--dark);
+    color: #fff;
 }
 
 #uname {

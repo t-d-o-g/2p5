@@ -11,9 +11,10 @@ firebase.initializeApp(config);
 
 var fs = firebase.firestore();
 var db = firebase.database();
+var uid;
+var userRef;
 var settings = {timestampsInSnapshots: true};
 fs.settings(settings);
-var uid;
 
 window.onload = function() {
     firebase.auth().signInAnonymously().catch(function(error) {
@@ -24,14 +25,24 @@ window.onload = function() {
         var user = firebase.auth().currentUser;
 
         if (user) {
-          // User is signed in.
-          uid = user.uid;
-          console.log(uid);
+            // User is signed in.
+            uid = user.uid;
+            userRef = fs.collection('users').doc(uid);
+            console.log(uid);
+            userRef.get().then(function(doc) {
+                if (doc.exists) {
+                    console.log('existing user');
+                    $('.game').show();
+                } else {
+                    $('.login').show();
+                    console.log('new user');
+                }
+            });
         } else {
-          // User is signed out.
-          console.log('User is signed out');
+            // User is signed out.
+            console.log('User is signed out');
         }
-      });
+    });
 
     function addUser(user) {
         fs.collection('users').doc(uid).set({
@@ -71,6 +82,11 @@ window.onload = function() {
         $('.game').show();
     }
 
+    function logout() {
+        $('.login').show();
+        $('.game').hide();
+    }
+
     $('#leet-btn').on('click', function(e) {
         if ($('body').css('font-family') === 'LeetSpeak') {
             $('body').css('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif');
@@ -81,7 +97,7 @@ window.onload = function() {
         }
     });
 
-    $('#submit-btn').on('click', function(e) {
+    $('#login-btn').on('click', function(e) {
         var userName = $('#uname').val();
         if (userName) {
             addUser(userName);
@@ -91,11 +107,8 @@ window.onload = function() {
         }
     })
 
-    window.onbeforeunload = function () {
+    $('#logout-btn').on('click', function(e) {
         deleteUser(uid);
-    }
-
-    window.unload = function () {
-        deleteUser(uid);
-    }
+        logout();
+    })
  };
