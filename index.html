@@ -10,6 +10,8 @@
         <link rel="stylesheet" href="assets/css/main.css" onerror="sheetError()">
         <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase-firestore.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase-auth.js"></script>
     </head>
 
     <body>
@@ -30,11 +32,20 @@
                                 <input type="text" class="form-control" id="uname" name="uname" placeholder="Bob" required>
                                 <div class="invalid-feedback">Name required</div>
                                 <button type="submit" class="btn btn-primary m-4" id="submit-btn">Submit</button>
-                                <button type="submit" class="btn btn-primary" id="delete-btn">Delete</button>
                             </fieldset>
                         </div>
                     </div>
                 </div>
+
+                <section class="game">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-12 text-center">
+                                <h1>Select your opponent<h1>
+                            </div>
+                        </div>
+                    </div>
+                </section>
         </main>
 
         <footer>

@@ -34,6 +34,10 @@ input:focus {
 .btn:focus {
   box-shadow: none !important; }
 
+.game {
+  display: none;
+  background: var(--dark); }
+
 #uname {
   width: 50%;
   margin: 0 auto; }
