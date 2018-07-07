@@ -33,6 +33,7 @@ window.onload = function() {
                 if (doc.exists) {
                     console.log('existing user');
                     $('.game').show();
+                    playGame();
                 } else {
                     $('.login').show();
                     console.log('new user');
@@ -47,7 +48,7 @@ window.onload = function() {
     function addUser(user) {
         fs.collection('users').doc(uid).set({
             connected: true,
-            hasOpponent: false,
+            available: true,
             name: user,
             score: 0,
         }).then(function() {
@@ -78,13 +79,29 @@ window.onload = function() {
     }
 
     function playGame() {
+        console.log('play game');
         $('.login').hide();
         $('.game').show();
+        listOpponents();
     }
 
     function logout() {
         $('.login').show();
         $('.game').hide();
+    }
+
+    function listOpponents() {
+        var opponentEl = '';
+        var counter = 0;
+        fs.collection('users').get().then(function(querySnapshot) {
+            querySnapshot.forEach(function(doc) {
+                opponentEl = '<li class="opponent-' + counter + '"><a href="#">' + doc.data().name + '</a></li>';
+                if (doc.id !== uid && doc.data().available) {
+                    $('#opponent').append(opponentEl);
+                    counter++;
+                }
+            });
+        });
     }
 
     $('#leet-btn').on('click', function(e) {

@@ -39,9 +39,17 @@ input:focus {
 
 .game {
   display: none;
+  height: 100vh;
   background: var(--dark);
   color: #fff; }
 
 #uname {
   width: 50%;
   margin: 0 auto; }
+
+#opponent li {
+  list-style-type: none; }
+
+#logout-btn {
+  position: fixed;
+  bottom: 10%; }
