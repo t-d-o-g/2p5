@@ -32,10 +32,8 @@ window.onload = function() {
             userRef.get().then(function(doc) {
                 if (doc.exists) {
                     console.log('existing user');
-                    $('.game').show();
                     playGame();
                 } else {
-                    $('.login').show();
                     console.log('new user');
                 }
             });
@@ -79,25 +77,27 @@ window.onload = function() {
     }
 
     function playGame() {
-        console.log('play game');
-        $('.login').hide();
-        $('.game').show();
+        $('#game-heading').text('Select your opponent');
+        $('#uname').hide();
         listOpponents();
+        $('#submit-btn').text('Logout');
     }
 
     function logout() {
-        $('.login').show();
-        $('.game').hide();
+        $('#game-heading').text('Enter Name to Play');
+        $('#uname').show();
+        $('#opponents').empty();
+        $('#submit-btn').text('Login');
     }
 
     function listOpponents() {
-        var opponentEl = '';
+        var opponentBtn = '';
         var counter = 0;
         fs.collection('users').get().then(function(querySnapshot) {
             querySnapshot.forEach(function(doc) {
-                opponentEl = '<li class="opponent-' + counter + '"><a href="#">' + doc.data().name + '</a></li>';
+                opponentBtn = '<button class="btn btn-dark" id="opponent-' + counter + '">' + doc.data().name + '</button>';
                 if (doc.id !== uid && doc.data().available) {
-                    $('#opponent').append(opponentEl);
+                    $('#opponents').append(opponentBtn);
                     counter++;
                 }
             });
@@ -107,25 +107,26 @@ window.onload = function() {
     $('#leet-btn').on('click', function(e) {
         if ($('body').css('font-family') === 'LeetSpeak') {
             $('body').css('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif');
-            $('#leet-btn').text('Leet');
+            $('#leet-btn').text('LEET');
         } else {
             $('body').css('font-family', 'LeetSpeak');
             $('#leet-btn').text('Deleet');
         }
     });
 
-    $('#login-btn').on('click', function(e) {
-        var userName = $('#uname').val();
-        if (userName) {
-            addUser(userName);
-            playGame();
+    $('#submit-btn').on('click', function(e) {
+        var userName = $('#uname input').val();
+        var $this = $(this);
+        if ($this.text() === 'Login') {
+            if (userName) {
+                addUser(userName);
+                playGame();
+            } else {
+                $('.invalid-feedback').text('Name required');
+            }
         } else {
-            $('.invalid-feedback').text('Name required');
+            deleteUser(uid);
+            logout();
         }
-    })
-
-    $('#logout-btn').on('click', function(e) {
-        deleteUser(uid);
-        logout();
-    })
+    });
  };

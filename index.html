@@ -16,37 +16,26 @@
 
     <body>
         <header>
-            <div class="d-flex page-header bg-primary justify-content-start">
-                <button type="submit" class="btn btn-primary" id="leet-btn">Leet</button>
-                <h1>Rock Paper Scissors</h1>
+            <div class="d-flex page-header bg-primary">
+                <button type="submit" class="btn btn-primary" id="leet-btn">LEET</button>
+                <span class="m-auto"><h1>Rock Paper Scissors</h1></span>
             </div>
         </header>
 
         <main>
-            <section class="login">
+            <section class="game">
                 <div class="container was-validated">
                     <div class="row justify-content-center">
                         <div class="col-12 text-center">
-                            <fieldset>
-                                <legend>Enter Name to Play</legend>
-                                <input type="text" class="form-control" id="uname" name="uname" placeholder="Bob" required>
+                            <p id="game-heading">Enter Name to Play</p>
+                            <div id="uname">
+                                <input type="text" class="form-control" name="uname" placeholder="Bob" required>
                                 <div class="invalid-feedback">Name required</div>
-                                <button type="submit" class="btn btn-primary m-4" id="login-btn">Login</button>
-                            </fieldset>
+                            </div>
+                            <div id="opponents">
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="game">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-12 text-center">
-                            <h1>Select your opponent</h1>
-                                <ul id="opponent">
-                                </ul>
-                            <button type="submit" class="btn btn-primary" id="logout-btn">Logout</button>
-                        </div>
+                        <button type="submit" class="btn btn-primary" id="submit-btn">Login</button>
                     </div>
                 </div>
             </section>

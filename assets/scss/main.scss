@@ -16,46 +16,29 @@ body {
     border-style: dashed;
 }
 
-fieldset {
-    padding: 1em;
-    margin: 3vh 0;
-    height: 100%;
-}
-
-legend {
-    background-color: var(--dark);
-    color: white;
-    padding: 1rem;
-    margin: 2rem;
-}
-
 input:focus {
     outline: none;
-}
-
-.login {
-    resize: both;
-}
-
-.page-header h1 {
-    position: relative;
-    margin: auto;
-
 }
 
 .btn:focus {
     box-shadow: none !important;
 }
 
-.login {
-    display: none;
+.page-header h1 {
+    align-self: center;
+    margin-left: -63.64px;
 }
 
 .game {
-    display: none;
     height: 100vh;
     background: var(--dark);
     color: #fff;
+}
+
+#game-heading {
+    font-size: 1.5em;
+    padding: 1rem;
+    margin: 2rem;
 }
 
 #uname {
@@ -67,7 +50,7 @@ input:focus {
     list-style-type: none;
 }
 
-#logout-btn {
+#submit-btn {
     position: fixed;
     bottom: 10%;
 }
