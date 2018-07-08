@@ -107,7 +107,7 @@ window.onload = function() {
     $('#leet-btn').on('click', function(e) {
         if ($('body').css('font-family') === 'LeetSpeak') {
             $('body').css('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif');
-            $('#leet-btn').text('Releet');
+            $('#leet-btn').text('Leet');
         } else {
             $('body').css('font-family', 'LeetSpeak');
             $('#leet-btn').text('Deleet');

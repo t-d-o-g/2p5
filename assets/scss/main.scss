@@ -9,7 +9,7 @@ $bs-default: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 body {
-    font-family: LeetSpeak;
+    font-family: $bs-default;
     position: absolute;
     height: 100%;
     width: 100%;
