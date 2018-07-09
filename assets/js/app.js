@@ -1,3 +1,10 @@
+// Functionality that still needs to be implemented:
+// - Need to accept user challenge to intialize game (Am currently able to log user updates that will allow this functionality);
+// - Need to implement user interaction with game (Should be the easiest part)
+// - Need to add messaging
+// - Almost there!
+
+
 // init Firebase db
 var config = {
     apiKey: "AIzaSyDmVphIEhlwnC3eNLjADizUs_-22rPhFRE",
@@ -13,7 +20,6 @@ firebase.initializeApp(config);
 var fs = firebase.firestore();
 var db = firebase.database();
 var uid;
-var userRef;
 var settings = {timestampsInSnapshots: true};
 fs.settings(settings);
 
@@ -23,17 +29,20 @@ window.onload = function() {
     });
 
     firebase.auth().onAuthStateChanged(function(user) {
-        var user = firebase.auth().currentUser;
+        user = firebase.auth().currentUser;
 
         if (user) {
             // User is signed in.
             uid = user.uid;
-            userRef = fs.collection('users').doc(uid);
+            var userRef = fs.collection('users').doc(uid);
             console.log(uid);
             userRef.get().then(function(doc) {
                 if (doc.exists) {
                     console.log('existing user');
+
+                    // Continue game on refresh
                     playGame();
+
                 } else {
                     console.log('new user');
                 }
@@ -42,7 +51,33 @@ window.onload = function() {
             // User is signed out.
             console.log('User is signed out');
         }
+
     });
+
+    // Update opponent list in real time with user collection snapshot
+    fs.collection('users')
+        .onSnapshot(function(snapshot) {
+            listOpponents();
+    }, function(err) {
+        console.log('Encountered error ', err);
+    });
+
+    // Get user updates in realtime
+    fs.collection('users').onSnapshot(function(snapshot) {
+        snapshot.docChanges().forEach(function(change) {
+            if (change.type === "modified") {
+                console.log('Changed: ', change.doc.data());
+
+                // Listen for any updates to user doc
+                // fs.collection('users').doc(uid).onSnapshot(function(doc) {
+                // console.log(doc);
+                //     console.log('Users has been challenged: ' + doc.data().challenged);
+                //     console.log('Users has accepted challenged: ' + doc.data().challengeAccepted);
+                // });
+            }
+        });
+    });
+
 
     function addUser(user) {
         fs.collection('users').doc(uid).set({
@@ -50,9 +85,10 @@ window.onload = function() {
             challengeAccepted: false,
             challenged: false,
             connected: true,
+            losses: 0,
             message: "Let's play!",
             name: user,
-            score: 0
+            wins: 0
         }).then(function() {
             console.log('Document Successfully Written');
         }).catch(function(error) {
@@ -67,13 +103,6 @@ window.onload = function() {
             console.error('Error removing document: ', error);
         });
     }
-
-    // Update opponent list in real time with user collection snapshot
-    fs.collection('users').onSnapshot(function (snapshot) {
-        listOpponents();
-    }, function(err) {
-        console.log('Encountered error ', err);
-    });
 
     function updatePresence(user, isConnected) {
         var userRef = fs.collection("users").doc(user);
@@ -104,16 +133,24 @@ window.onload = function() {
     function listOpponents() {
         $('#opponents').empty();
         var opponentBtn = '';
-        var counter = 0;
         fs.collection('users').get().then(function(querySnapshot) {
             querySnapshot.forEach(function(doc) {
-                opponentBtn = '<button class="btn btn-dark" id="opponent-btn-' + counter + '">' + doc.data().name + '</button>';
                 if (doc.id !== uid && doc.data().available) {
+                    opponentBtn = '<button class="btn btn-dark" id="opponent-id-' + doc.id + '">' + doc.data().name + '</button>';
                     $('#opponents').append(opponentBtn);
-                    counter++;
                 }
             });
         });
+    }
+
+    function challengeOpponent(opponentId) {
+        fs.collection('users').doc(opponentId).update({
+            challenged: true,
+        }).then(function() {
+            console.log('Document Successfully Updated');
+        }).catch(function(error) {
+            console.error('Error updating document: ', error);
+        }); 
     }
 
     $('#leet-btn').on('click', function(e) {
@@ -129,6 +166,7 @@ window.onload = function() {
     $('#submit-btn').on('click', function(e) {
         var userName = $('#uname input').val();
         var $this = $(this);
+
         if ($this.text() === 'Login') {
             if (userName) {
                 addUser(userName);
@@ -142,8 +180,12 @@ window.onload = function() {
         }
     });
     
-    $('#opponents').on('click', '[id^="opponent-btn-"]', function(e) {
+    $('#opponents').on('click', '[id^="opponent-id-"]', function(e) {
         $this = $(this);
         $('#game-heading').text('Waiting for ' + $this.text() + ' to accept...');
+        var id = $this.attr('id').split('opponent-id-')[1];
+        console.log('opponent id ', id);
+        challengeOpponent(id);
+        // Add 30 second timer here
     })
  };
