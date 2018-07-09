@@ -17,8 +17,7 @@ input:focus {
   box-shadow: none !important; }
 
 .page-header h1 {
-  align-self: center;
-  margin-left: -63.64px; }
+  align-self: center; }
 
 .game {
   height: 100vh;
@@ -40,3 +39,6 @@ input:focus {
 #submit-btn {
   position: fixed;
   bottom: 10%; }
+
+#leet-btn {
+  display: none; }

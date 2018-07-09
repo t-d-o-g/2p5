@@ -46,11 +46,13 @@ window.onload = function() {
 
     function addUser(user) {
         fs.collection('users').doc(uid).set({
-            connected: true,
             available: true,
+            challengeAccepted: false,
+            challenged: false,
+            connected: true,
+            message: "Let's play!",
             name: user,
-            score: 0,
-            message: 'hello'
+            score: 0
         }).then(function() {
             console.log('Document Successfully Written');
         }).catch(function(error) {

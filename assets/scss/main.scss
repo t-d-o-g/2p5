@@ -26,7 +26,7 @@ input:focus {
 
 .page-header h1 {
     align-self: center;
-    margin-left: -63.64px;
+    // margin-left: -63.64px;
 }
 
 .game {
@@ -53,6 +53,10 @@ input:focus {
 #submit-btn {
     position: fixed;
     bottom: 10%;
+}
+
+#leet-btn {
+    display: none;
 }
 
 // Small devices (landscape phones, 300px and up)
