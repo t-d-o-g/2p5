@@ -34,8 +34,8 @@ input:focus {
   width: 50%;
   margin: 0 auto; }
 
-#opponent li {
-  list-style-type: none; }
+#opponents {
+  display: none; }
 
 #submit-btn {
   position: fixed;

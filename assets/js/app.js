@@ -1,4 +1,4 @@
- // Initialize Firebase
+// init Firebase db
 var config = {
     apiKey: "AIzaSyDmVphIEhlwnC3eNLjADizUs_-22rPhFRE",
     authDomain: "p5fb-286d4.firebaseapp.com",
@@ -7,6 +7,7 @@ var config = {
     storageBucket: "p5fb-286d4.appspot.com",
     messagingSenderId: "47868642986"
 };
+
 firebase.initializeApp(config);
 
 var fs = firebase.firestore();
@@ -49,6 +50,7 @@ window.onload = function() {
             available: true,
             name: user,
             score: 0,
+            message: 'hello'
         }).then(function() {
             console.log('Document Successfully Written');
         }).catch(function(error) {
@@ -63,6 +65,14 @@ window.onload = function() {
             console.error('Error removing document: ', error);
         });
     }
+
+    // Update opponent list in real time with user collection snapshot
+    fs.collection('users').onSnapshot(function (snapshot) {
+        console.log('Received doc snapshot: ', snapshot);
+        listOpponents();
+    }, function(err) {
+        console.log('Encountered error ', err);
+    });
 
     function updatePresence(user, isConnected) {
         var userRef = fs.collection("users").doc(user);
@@ -79,23 +89,24 @@ window.onload = function() {
     function playGame() {
         $('#game-heading').text('Select your opponent');
         $('#uname').hide();
-        listOpponents();
+        $('#opponents').show();
         $('#submit-btn').text('Logout');
     }
 
     function logout() {
         $('#game-heading').text('Enter Name to Play');
         $('#uname').show();
-        $('#opponents').empty();
+        $('#opponents').hide();
         $('#submit-btn').text('Login');
     }
 
     function listOpponents() {
+        $('#opponents').empty();
         var opponentBtn = '';
         var counter = 0;
         fs.collection('users').get().then(function(querySnapshot) {
             querySnapshot.forEach(function(doc) {
-                opponentBtn = '<button class="btn btn-dark" id="opponent-' + counter + '">' + doc.data().name + '</button>';
+                opponentBtn = '<button class="btn btn-dark" id="opponent-btn-' + counter + '">' + doc.data().name + '</button>';
                 if (doc.id !== uid && doc.data().available) {
                     $('#opponents').append(opponentBtn);
                     counter++;
@@ -129,4 +140,9 @@ window.onload = function() {
             logout();
         }
     });
+    
+    $('#opponents').on('click', '[id^="opponent-btn-"]', function(e) {
+        $this = $(this);
+        $('#game-heading').text('Waiting for ' + $this.text() + ' to accept...');
+    })
  };

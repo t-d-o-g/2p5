@@ -46,8 +46,8 @@ input:focus {
     margin: 0 auto;
 }
 
-#opponent li {
-    list-style-type: none;
+#opponents  {
+    display: none;
 }
 
 #submit-btn {
