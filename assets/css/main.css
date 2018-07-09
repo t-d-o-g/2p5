@@ -42,3 +42,18 @@ input:focus {
 
 #leet-btn {
   display: none; }
+
+#rps {
+  margin: 15%; }
+
+#img-rock {
+  width: 10%;
+  margin: 5%; }
+
+#img-paper {
+  width: 10%;
+  margin: 5%; }
+
+#img-scissors {
+  width: 10%;
+  margin: 5%; }

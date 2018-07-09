@@ -70,7 +70,6 @@ window.onload = function() {
 
     // Update opponent list in real time with user collection snapshot
     fs.collection('users').onSnapshot(function (snapshot) {
-        console.log('Received doc snapshot: ', snapshot);
         listOpponents();
     }, function(err) {
         console.log('Encountered error ', err);
