@@ -70,6 +70,7 @@ window.onload = function() {
                 userRef.get().then(function(usr) {
                     var oppRef = fs.collection('users').doc(usr.data().opponent);
                     oppRef.get().then(function(opp) {
+                        // if (opp.data().opponent !== null) {
                         if (opp.data().opponent !== null) {
                             oppRef.update({
                                 available: false, 
@@ -89,7 +90,8 @@ window.onload = function() {
                             $('.game').on('click', '#play-btn', function(e) {
 
                                 oppRef.update({
-                                    opponent: opp.id, 
+                                    // opponent: opp.id, 
+                                    opponent: usr.id, 
                                 }).then(function() {
                                     console.log(opp.id + ' successfully updated');
                                 }).catch(function (error) {
@@ -103,7 +105,6 @@ window.onload = function() {
                                 }).catch(function (error) {
                                     console.error('Error updating document: ', error);
                                 });
-
                                 $('#play-btn').hide();
                                 $('#opponents').hide();
                             });
@@ -156,16 +157,18 @@ window.onload = function() {
 
     function playGame(userId, oppId) {
         $('#opponents').hide();
-        $('#game-heading').text('Play Game!');
         // Heading should display user message
         var userRef = fs.collection('users').doc(userId);
         var oppRef = fs.collection('users').doc(oppId);
 
+        // opponent gets to go first
         // Implement game logic
         $('#img-rock').on('click')
 
         userRef.get().then(function(usr) {
             oppRef.get().then(function(opp) {
+                // $('#game-heading').text(opp.data().name + "'s Turn");
+                $('#game-heading').text("Play Game!");
                 console.log('User ', usr.data());
                 console.log('Opponent ', opp.data());
             });
