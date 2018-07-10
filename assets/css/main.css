@@ -60,3 +60,6 @@ img[id^='img-']:hover {
 
 #play-btn {
   margin: 5%; }
+
+#score {
+  display: none; }

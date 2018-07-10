@@ -82,6 +82,10 @@ img[id^='img-']:hover {
     margin: 5%;
 }
 
+#score {
+    display: none;
+}
+
 // Small devices (landscape phones, 300px and up)
 @media (min-width: 300px) {
 }

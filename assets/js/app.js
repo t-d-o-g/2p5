@@ -1,6 +1,5 @@
 // Functionality that still needs to be implemented:
-// - Need to accept user challenge to intialize game (Am currently able to log user updates that will allow this functionality);
-// - Need to implement user interaction with game (Should be the easiest part)
+// - Need to implement user interaction with game
 // - Need to add messaging
 // - Almost there!
 
@@ -20,6 +19,7 @@ firebase.initializeApp(config);
 var fs = firebase.firestore();
 var db = firebase.database();
 var uid;
+var score = 0;
 var settings = {timestampsInSnapshots: true};
 fs.settings(settings);
 
@@ -120,6 +120,7 @@ window.onload = function() {
         $('#game-heading').text('Select your opponent');
         $('#uname').hide();
         $('#opponents').show();
+        $('#score').show();
         $('#submit-btn').text('Logout');
     }
 
@@ -131,6 +132,7 @@ window.onload = function() {
     }
 
     function playGame() {
+        $('#img-rock').on('click')
 
     }
 
@@ -195,6 +197,9 @@ window.onload = function() {
     })
 
     $('.game').on('click', '#play-btn', function(e) {
+        $('#play-btn').hide();
+        $('#opponents').hide();
         console.log('Playing Game!');
+        playGame();
     });
  };
