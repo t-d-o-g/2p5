@@ -131,7 +131,9 @@ window.onload = function() {
         $('#submit-btn').text('Login');
     }
 
-    function playGame() {
+    function playGame(uid1, uid2) {
+        $('#play-btn').hide();
+        $('#opponents').hide();
         $('#img-rock').on('click')
 
     }
@@ -197,9 +199,8 @@ window.onload = function() {
     })
 
     $('.game').on('click', '#play-btn', function(e) {
-        $('#play-btn').hide();
-        $('#opponents').hide();
         console.log('Playing Game!');
-        playGame();
+        // Need to get user ids
+        playGame(uid1, uid2);
     });
  };
