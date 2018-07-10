@@ -41,7 +41,7 @@ window.onload = function() {
                     console.log('existing user');
 
                     // Continue game on refresh
-                    playGame();
+                    login();
 
                 } else {
                     console.log('new user');
@@ -67,6 +67,7 @@ window.onload = function() {
         snapshot.docChanges().forEach(function(change) {
             var userRef = fs.collection('users').doc(change.doc.id);
             if (change.type === "modified" && change.doc.id === uid) {
+                // Need to hide opponent/user name in opponent list when challenge initiated
                 userRef.get().then(function(usr) {
                     var opponentRef = fs.collection('users').doc(usr.data().opponent);
                     opponentRef.get().then(function(opp) {
@@ -78,7 +79,6 @@ window.onload = function() {
             }
         });
     });
-
 
     function addUser(user) {
         fs.collection('users').doc(uid).set({
@@ -116,7 +116,7 @@ window.onload = function() {
         });
     }
 
-    function playGame() {
+    function login() {
         $('#game-heading').text('Select your opponent');
         $('#uname').hide();
         $('#opponents').show();
@@ -128,6 +128,10 @@ window.onload = function() {
         $('#uname').show();
         $('#opponents').hide();
         $('#submit-btn').text('Login');
+    }
+
+    function playGame() {
+
     }
 
     function listOpponents() {
@@ -171,7 +175,7 @@ window.onload = function() {
         if ($this.text() === 'Login') {
             if (userName) {
                 addUser(userName);
-                playGame();
+                login();
             } else {
                 $('.invalid-feedback').text('Name required');
             }
@@ -189,4 +193,8 @@ window.onload = function() {
         challengeOpponent(id);
         // Add 30 second timer here
     })
+
+    $('.game').on('click', '#play-btn', function(e) {
+        console.log('Playing Game!');
+    });
  };
