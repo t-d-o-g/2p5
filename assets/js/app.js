@@ -61,7 +61,7 @@ window.onload = function() {
         console.log('Encountered error ', err);
     });
 
-    // Challenge/Accept Interaction preceding Game 
+    // Challenge/Accept interaction preceding Game (Needs Refactoring) 
     fs.collection('users').onSnapshot(function(snapshot) {
         snapshot.docChanges().forEach(function(change) {
             var userRef = fs.collection('users').doc(change.doc.id);
@@ -70,13 +70,18 @@ window.onload = function() {
                 userRef.get().then(function(usr) {
                     var oppRef = fs.collection('users').doc(usr.data().opponent);
                     oppRef.get().then(function(opp) {
-                        var playBtn = '<div><button class="btn btn-primary" id="play-btn">Play</button></div>';
                         if (opp.data().opponent !== null) {
+                            oppRef.update({
+                                available: false, 
+                            }).then(function() {
+                                console.log(opp.id + ' successfully updated');
+                            }).catch(function (error) {
+                                console.error('Error updating document: ', error);
+                            });
                             playGame(uid, opp.id);
-
                         } else {
                             $('#game-heading').text('You have been challenged by ' + opp.data().name);
-
+                            var playBtn = '<div><button class="btn btn-primary" id="play-btn">Play</button></div>';
                             $('#game-heading').append(playBtn);
 
                             // Need to implement decline button
@@ -103,7 +108,6 @@ window.onload = function() {
                                 $('#opponents').hide();
                             });
                         }
-
                     });
                 });
             }
