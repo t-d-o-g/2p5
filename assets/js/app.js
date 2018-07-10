@@ -1,8 +1,9 @@
-// Functionality that still needs to be implemented:
-// - Need to implement user interaction with game
-// - Need to add messaging
-// - Almost there!
+/*
+Functionality that still needs to be implemented:
 
+- Need to implement game logic 
+- Need to implement messaging
+*/
 
 // init Firebase db
 var config = {
@@ -35,11 +36,9 @@ window.onload = function() {
             // User is signed in.
             uid = user.uid;
             var userRef = fs.collection('users').doc(uid);
-            console.log(uid);
             userRef.get().then(function(doc) {
                 if (doc.exists) {
                     console.log('existing user');
-
                     // Continue game on refresh
                     login();
 
@@ -62,18 +61,49 @@ window.onload = function() {
         console.log('Encountered error ', err);
     });
 
-    // Get user updates in realtime
+    // Challenge/Accept Interaction preceding Game 
     fs.collection('users').onSnapshot(function(snapshot) {
         snapshot.docChanges().forEach(function(change) {
             var userRef = fs.collection('users').doc(change.doc.id);
             if (change.type === "modified" && change.doc.id === uid) {
                 // Need to hide opponent/user name in opponent list when challenge initiated
                 userRef.get().then(function(usr) {
-                    var opponentRef = fs.collection('users').doc(usr.data().opponent);
-                    opponentRef.get().then(function(opp) {
+                    var oppRef = fs.collection('users').doc(usr.data().opponent);
+                    oppRef.get().then(function(opp) {
                         var playBtn = '<div><button class="btn btn-primary" id="play-btn">Play</button></div>';
-                        $('#game-heading').text('You have been challenged by ' + opp.data().name);
-                        $('#game-heading').append(playBtn);
+                        if (opp.data().opponent !== null) {
+                            playGame(uid, opp.id);
+
+                        } else {
+                            $('#game-heading').text('You have been challenged by ' + opp.data().name);
+
+                            $('#game-heading').append(playBtn);
+
+                            // Need to implement decline button
+
+                            $('.game').on('click', '#play-btn', function(e) {
+
+                                oppRef.update({
+                                    opponent: opp.id, 
+                                }).then(function() {
+                                    console.log(opp.id + ' successfully updated');
+                                }).catch(function (error) {
+                                    console.error('Error updating document: ', error);
+                                });
+
+                                userRef.update({
+                                    available: false, 
+                                }).then(function() {
+                                    console.log(opp.id + ' successfully updated');
+                                }).catch(function (error) {
+                                    console.error('Error updating document: ', error);
+                                });
+
+                                $('#play-btn').hide();
+                                $('#opponents').hide();
+                            });
+                        }
+
                     });
                 });
             }
@@ -85,9 +115,9 @@ window.onload = function() {
             available: true,
             connected: true,
             losses: 0,
-            message: "Let's play!",
+            message: "Play Game!",
             name: user,
-            opponent: -1,
+            opponent: null,
             wins: 0
         }).then(function() {
             console.log('Document Successfully Written');
@@ -104,17 +134,6 @@ window.onload = function() {
         });
     }
 
-    function updatePresence(user, isConnected) {
-        var userRef = fs.collection("users").doc(user);
-        
-        return userRef.update({
-            connected: isConnected
-        }).then(function() {
-            console.log(user + ' successfully updated');
-        }).catch(function (error) {
-            console.error('Error updating document: ', error);
-        });
-    }
 
     function login() {
         $('#game-heading').text('Select your opponent');
@@ -131,11 +150,22 @@ window.onload = function() {
         $('#submit-btn').text('Login');
     }
 
-    function playGame(uid1, uid2) {
-        $('#play-btn').hide();
+    function playGame(userId, oppId) {
         $('#opponents').hide();
+        $('#game-heading').text('Play Game!');
+        // Heading should display user message
+        var userRef = fs.collection('users').doc(userId);
+        var oppRef = fs.collection('users').doc(oppId);
+
+        // Implement game logic
         $('#img-rock').on('click')
 
+        userRef.get().then(function(usr) {
+            oppRef.get().then(function(opp) {
+                console.log('User ', usr.data());
+                console.log('Opponent ', opp.data());
+            });
+        });
     }
 
     function listOpponents() {
@@ -162,6 +192,20 @@ window.onload = function() {
         }); 
     }
 
+    // Need to implement function to hide user when not connnected
+    function updatePresence(user, isConnected) {
+        var userRef = fs.collection("users").doc(user);
+        
+        return userRef.update({
+            connected: isConnected
+        }).then(function() {
+            console.log(user + ' successfully updated');
+        }).catch(function (error) {
+            console.error('Error updating document: ', error);
+        });
+    }
+
+    // Feture to translate user messages to leet font. Will be added after messaging is implemented
     $('#leet-btn').on('click', function(e) {
         if ($('body').css('font-family') === 'LeetSpeak') {
             $('body').css('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif');
@@ -193,14 +237,7 @@ window.onload = function() {
         $this = $(this);
         $('#game-heading').text('Waiting for ' + $this.text() + ' to accept...');
         var id = $this.attr('id').split('opponent-id-')[1];
-        console.log('opponent id ', id);
         challengeOpponent(id);
         // Add 30 second timer here
     })
-
-    $('.game').on('click', '#play-btn', function(e) {
-        console.log('Playing Game!');
-        // Need to get user ids
-        playGame(uid1, uid2);
-    });
  };
