@@ -65,15 +65,16 @@ window.onload = function() {
     // Get user updates in realtime
     fs.collection('users').onSnapshot(function(snapshot) {
         snapshot.docChanges().forEach(function(change) {
-            if (change.type === "modified") {
-                console.log('Changed: ', change.doc.data());
-
-                // Listen for any updates to user doc
-                // fs.collection('users').doc(uid).onSnapshot(function(doc) {
-                // console.log(doc);
-                //     console.log('Users has been challenged: ' + doc.data().challenged);
-                //     console.log('Users has accepted challenged: ' + doc.data().challengeAccepted);
-                // });
+            var userRef = fs.collection('users').doc(change.doc.id);
+            if (change.type === "modified" && change.doc.id === uid) {
+                userRef.get().then(function(usr) {
+                    var opponentRef = fs.collection('users').doc(usr.data().opponent);
+                    opponentRef.get().then(function(opp) {
+                        var playBtn = '<div><button class="btn btn-primary" id="play-btn">Play</button></div>';
+                        $('#game-heading').text('You have been challenged by ' + opp.data().name);
+                        $('#game-heading').append(playBtn);
+                    });
+                });
             }
         });
     });
@@ -82,12 +83,11 @@ window.onload = function() {
     function addUser(user) {
         fs.collection('users').doc(uid).set({
             available: true,
-            challengeAccepted: false,
-            challenged: false,
             connected: true,
             losses: 0,
             message: "Let's play!",
             name: user,
+            opponent: -1,
             wins: 0
         }).then(function() {
             console.log('Document Successfully Written');
@@ -144,8 +144,9 @@ window.onload = function() {
     }
 
     function challengeOpponent(opponentId) {
-        fs.collection('users').doc(opponentId).update({
-            challenged: true,
+        var userRef = fs.collection('users').doc(opponentId);
+        userRef.update({
+            opponent: uid
         }).then(function() {
             console.log('Document Successfully Updated');
         }).catch(function(error) {

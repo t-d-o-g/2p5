@@ -20,6 +20,10 @@ input:focus {
     outline: none;
 }
 
+img[id^='img-']:hover {
+    cursor:pointer;
+}
+
 .btn:focus {
     box-shadow: none !important;
 }
@@ -59,10 +63,6 @@ input:focus {
     display: none;
 }
 
-#rps {
-    margin: 15%;
-}
-
 #img-rock {
     width: 10%;
     margin: 5%;
@@ -78,8 +78,8 @@ input:focus {
     margin: 5%;
 }
 
-img[id^='img-']:hover {
-    cursor:pointer;
+#play-btn {
+    margin: 5%;
 }
 
 // Small devices (landscape phones, 300px and up)

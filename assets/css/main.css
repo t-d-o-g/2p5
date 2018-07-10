@@ -13,6 +13,9 @@ body {
 input:focus {
   outline: none; }
 
+img[id^='img-']:hover {
+  cursor: pointer; }
+
 .btn:focus {
   box-shadow: none !important; }
 
@@ -43,9 +46,6 @@ input:focus {
 #leet-btn {
   display: none; }
 
-#rps {
-  margin: 15%; }
-
 #img-rock {
   width: 10%;
   margin: 5%; }
@@ -58,5 +58,5 @@ input:focus {
   width: 10%;
   margin: 5%; }
 
-img[id^='img-']:hover {
-  cursor: pointer; }
+#play-btn {
+  margin: 5%; }
