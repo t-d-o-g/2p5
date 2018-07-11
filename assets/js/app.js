@@ -70,8 +70,7 @@ window.onload = function() {
                 userRef.get().then(function(usr) {
                     var oppRef = fs.collection('users').doc(usr.data().opponent);
                     oppRef.get().then(function(opp) {
-                        // if (opp.data().opponent !== null) {
-                        if (opp.data().opponent !== null) {
+                        if (opp.data().opponent !== null && usr.data().opponent !== null) {
                             oppRef.update({
                                 available: false, 
                             }).then(function() {
@@ -90,7 +89,6 @@ window.onload = function() {
                             $('.game').on('click', '#play-btn', function(e) {
 
                                 oppRef.update({
-                                    // opponent: opp.id, 
                                     opponent: usr.id, 
                                 }).then(function() {
                                     console.log(opp.id + ' successfully updated');
@@ -100,6 +98,7 @@ window.onload = function() {
 
                                 userRef.update({
                                     available: false, 
+                                    myTurn: true, 
                                 }).then(function() {
                                     console.log(opp.id + ' successfully updated');
                                 }).catch(function (error) {
@@ -121,6 +120,7 @@ window.onload = function() {
             connected: true,
             losses: 0,
             message: "Play Game!",
+            myTurn: false,
             name: user,
             opponent: null,
             wins: 0
@@ -161,16 +161,16 @@ window.onload = function() {
         var userRef = fs.collection('users').doc(userId);
         var oppRef = fs.collection('users').doc(oppId);
 
-        // opponent gets to go first
         // Implement game logic
         $('#img-rock').on('click')
 
         userRef.get().then(function(usr) {
             oppRef.get().then(function(opp) {
-                // $('#game-heading').text(opp.data().name + "'s Turn");
-                $('#game-heading').text("Play Game!");
-                console.log('User ', usr.data());
-                console.log('Opponent ', opp.data());
+                if (usr.data().myTurn) {
+                    $('#game-heading').text(usr.data().name + "'s Turn");
+                } else {
+                    $('#game-heading').text(opp.data().name + "'s Turn");
+                }
             });
         });
     }
