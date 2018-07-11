@@ -1,7 +1,5 @@
 /*
 Functionality that still needs to be implemented:
-
-- Need to implement game logic 
 - Need to implement messaging
 */
 
@@ -123,6 +121,7 @@ window.onload = function() {
             myTurn: false,
             name: user,
             opponent: null,
+            rps: null,
             wins: 0
         }).then(function() {
             console.log('Document Successfully Written');
@@ -155,19 +154,263 @@ window.onload = function() {
         $('#submit-btn').text('Login');
     }
 
+    // Needs refactor
     function playGame(userId, oppId) {
         $('#opponents').hide();
         // Heading should display user message
         var userRef = fs.collection('users').doc(userId);
         var oppRef = fs.collection('users').doc(oppId);
-
-        // Implement game logic
-        $('#img-rock').on('click')
+        var selectedRps = '';
 
         userRef.get().then(function(usr) {
             oppRef.get().then(function(opp) {
                 if (usr.data().myTurn) {
+                    $('#img-rock').show();
+                    $('#img-paper').show();
+                    $('#img-scissors').show();
+
                     $('#game-heading').text(usr.data().name + "'s Turn");
+
+                    $('img[id^="img-"]').hover(function() {
+                        $(this).css('cursor', 'pointer');
+                    })
+
+                    $('#img-rock').on('click', function() {
+                        $('#img-paper').hide();
+                        $('#img-scissors').hide();
+                        selectedRps = 'r';
+
+                        oppRef.update({
+                            myTurn: true, 
+                        }).then(function() {
+                            console.log(opp.id + ' successfully updated');
+                        }).catch(function (error) {
+                            console.error('Error updating document: ', error);
+                        });
+
+                        userRef.update({
+                            myTurn: false, 
+                            rps: selectedRps 
+                        }).then(function() {
+                            console.log(opp.id + ' successfully updated');
+                        }).catch(function (error) {
+                            console.error('Error updating document: ', error);
+                        });
+                    }) 
+
+                    $('#img-paper').on('click', function() {
+                        $('#img-rock').hide();
+                        $('#img-scissors').hide();
+                        selectedRps = 'p';
+
+                        oppRef.update({
+                            myTurn: true, 
+                        }).then(function() {
+                            console.log(opp.id + ' successfully updated');
+                        }).catch(function (error) {
+                            console.error('Error updating document: ', error);
+                        });
+
+                        userRef.update({
+                            myTurn: false, 
+                            rps: selectedRps 
+                        }).then(function() {
+                            console.log(opp.id + ' successfully updated');
+                        }).catch(function (error) {
+                            console.error('Error updating document: ', error);
+                        });
+                    }) 
+
+                    $('#img-scissors').on('click', function() {
+                        $('#img-rock').hide();
+                        $('#img-paper').hide();
+                        selectedRps = 's';
+
+                        oppRef.update({
+                            myTurn: true, 
+                        }).then(function() {
+                            console.log(opp.id + ' successfully updated');
+                        }).catch(function (error) {
+                            console.error('Error updating document: ', error);
+                        });
+
+                        userRef.update({
+                            myTurn: false, 
+                            rps: selectedRps 
+                        }).then(function() {
+                            console.log(opp.id + ' successfully updated');
+                        }).catch(function (error) {
+                            console.error('Error updating document: ', error);
+                        });
+                    }) 
+
+                    console.log('usr rps: ', usr.data().rps);
+                    console.log('opp rps: ', opp.data().rps);
+                    if (usr.data().rps !== null && opp.data().rps !== null) {
+                        var usrRps = usr.data().rps;
+                        var usrWins = usr.data().wins;
+                        var usrLosses = usr.data().losses;
+                        var oppRps = opp.data().rps;
+                        var oppWins = opp.data().wins;
+                        var oppLosses = opp.data().losses;
+
+                        if (usrRps === 's' && oppRps === 'r') {
+                            $('#game-heading').text(usr.data().name + "Wins!");
+                            console.log(usr.data().name + ' Wins')
+                            oppLosses++;
+                            usrWins++;
+                            console.log('Wins ', usrWins);
+                            console.log('Losses ', oppLosses);
+
+                            oppRef.update({
+                                rps: null,
+                                losses: oppLosses
+                            }).then(function() {
+                                console.log(opp.id + ' successfully updated');
+                            }).catch(function (error) {
+                                console.error('Error updating document: ', error);
+                            });
+
+                            userRef.update({
+                                rps: null,
+                                wins: usrWins 
+                            }).then(function() {
+                                console.log(opp.id + ' successfully updated');
+                            }).catch(function (error) {
+                                console.error('Error updating document: ', error);
+                            });
+                        } else if (usrRps === 'r' && oppRps === 'p') {
+                            $('#game-heading').text(usr.data().name + "Wins!");
+                            oppLosses++;
+                            usrWins++;
+                            console.log(usr.data().name + ' Wins')
+
+                            oppRef.update({
+                                rps: null, 
+                                losses: oppLosses
+                            }).then(function() {
+                                console.log(opp.id + ' successfully updated');
+                            }).catch(function (error) {
+                                console.error('Error updating document: ', error);
+                            });
+
+                            userRef.update({
+                                rps: null,
+                                wins: usrWins 
+                            }).then(function() {
+                                console.log(opp.id + ' successfully updated');
+                            }).catch(function (error) {
+                                console.error('Error updating document: ', error);
+                            });
+                        } else if (usrRps === 'p' && oppRps === 's') {
+                            $('#game-heading').text(usr.data().name + "Wins!");
+                            console.log(usr.data().name + ' Wins')
+                            oppLosses++;
+                            usrWins++;
+
+                            oppRef.update({
+                                rps: null,
+                                losses: oppLosses
+                            }).then(function() {
+                                console.log(opp.id + ' successfully updated');
+                            }).catch(function (error) {
+                                console.error('Error updating document: ', error);
+                            });
+
+                            userRef.update({
+                                rps: null,
+                                wins: usrWins 
+                            }).then(function() {
+                                console.log(opp.id + ' successfully updated');
+                            }).catch(function (error) {
+                                console.error('Error updating document: ', error);
+                            });
+
+                        } else if (usrRps === 'r' && oppRps === 'r') {
+                            $('#game-heading').text("It's a Tie!");
+                            console.log('It is a tie');
+
+                            oppRef.update({
+                                rps: null 
+                            }).then(function() {
+                                console.log(opp.id + ' successfully updated');
+                            }).catch(function (error) {
+                                console.error('Error updating document: ', error);
+                            });
+
+                            userRef.update({
+                                rps: null
+                            }).then(function() {
+                                console.log(opp.id + ' successfully updated');
+                            }).catch(function (error) {
+                                console.error('Error updating document: ', error);
+                            });
+                        } else if (usrRps === 'p' && oppRps === 'p') {
+                            $('#game-heading').text("It's a Tie!");
+                            console.log('It is a tie');
+
+                            oppRef.update({
+                                rps: null 
+                            }).then(function() {
+                                console.log(opp.id + ' successfully updated');
+                            }).catch(function (error) {
+                                console.error('Error updating document: ', error);
+                            });
+
+                            userRef.update({
+                                rps: null
+                            }).then(function() {
+                                console.log(opp.id + ' successfully updated');
+                            }).catch(function (error) {
+                                console.error('Error updating document: ', error);
+                            });
+                        } else if (usrRps === 's' && oppRps === 's') {
+                            $('#game-heading').text("It's a Tie!");
+                            console.log('It is a tie');
+
+                            oppRef.update({
+                                rps: null 
+                            }).then(function() {
+                                console.log(opp.id + ' successfully updated');
+                            }).catch(function (error) {
+                                console.error('Error updating document: ', error);
+                            });
+
+                            userRef.update({
+                                rps: null
+                            }).then(function() {
+                                console.log(opp.id + ' successfully updated');
+                            }).catch(function (error) {
+                                console.error('Error updating document: ', error);
+                            });
+                        } else {
+                            $('#game-heading').text(opp.data().name + "Wins!");
+                            console.log(opp.data().name + ' Wins')
+                            usrLosses++;
+                            oppWins++;
+
+                            oppRef.update({
+                                rps: null, 
+                                wins: oppWins 
+                            }).then(function() {
+                                console.log(opp.id + ' successfully updated');
+                            }).catch(function (error) {
+                                console.error('Error updating document: ', error);
+                            });
+
+                            userRef.update({
+                                rps: null,
+                                losses: usrLosses 
+                            }).then(function() {
+                                console.log(opp.id + ' successfully updated');
+                            }).catch(function (error) {
+                                console.error('Error updating document: ', error);
+                            });
+                        }
+                        $('#wins').text(' ' + usrWins);
+                        $('#losses').text(' ' + usrLosses);
+                    }
+
                 } else {
                     $('#game-heading').text(opp.data().name + "'s Turn");
                 }

@@ -13,9 +13,6 @@ body {
 input:focus {
   outline: none; }
 
-img[id^='img-']:hover {
-  cursor: pointer; }
-
 .btn:focus {
   box-shadow: none !important; }
 
