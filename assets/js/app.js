@@ -77,6 +77,8 @@ window.onload = function() {
                                 console.error('Error updating document: ', error);
                             });
                             playGame(uid, opp.id);
+                            $('#wins').text(' ' + usr.data().wins);
+                            $('#losses').text(' ' + usr.data().losses);
                         } else {
                             $('#game-heading').text('You have been challenged by ' + opp.data().name);
                             var playBtn = '<div><button class="btn btn-primary" id="play-btn">Play</button></div>';
@@ -244,8 +246,6 @@ window.onload = function() {
                         });
                     }) 
 
-                    console.log('usr rps: ', usr.data().rps);
-                    console.log('opp rps: ', opp.data().rps);
                     if (usr.data().rps !== null && opp.data().rps !== null) {
                         var usrRps = usr.data().rps;
                         var usrWins = usr.data().wins;
@@ -254,13 +254,10 @@ window.onload = function() {
                         var oppWins = opp.data().wins;
                         var oppLosses = opp.data().losses;
 
-                        if (usrRps === 's' && oppRps === 'r') {
+                        if (usrRps === 'r' && oppRps === 's') {
                             $('#game-heading').text(usr.data().name + "Wins!");
-                            console.log(usr.data().name + ' Wins')
                             oppLosses++;
                             usrWins++;
-                            console.log('Wins ', usrWins);
-                            console.log('Losses ', oppLosses);
 
                             oppRef.update({
                                 rps: null,
@@ -279,11 +276,10 @@ window.onload = function() {
                             }).catch(function (error) {
                                 console.error('Error updating document: ', error);
                             });
-                        } else if (usrRps === 'r' && oppRps === 'p') {
+                        } else if (usrRps === 'p' && oppRps === 'r') {
                             $('#game-heading').text(usr.data().name + "Wins!");
                             oppLosses++;
                             usrWins++;
-                            console.log(usr.data().name + ' Wins')
 
                             oppRef.update({
                                 rps: null, 
@@ -302,9 +298,8 @@ window.onload = function() {
                             }).catch(function (error) {
                                 console.error('Error updating document: ', error);
                             });
-                        } else if (usrRps === 'p' && oppRps === 's') {
+                        } else if (usrRps === 's' && oppRps === 'p') {
                             $('#game-heading').text(usr.data().name + "Wins!");
-                            console.log(usr.data().name + ' Wins')
                             oppLosses++;
                             usrWins++;
 
@@ -385,7 +380,6 @@ window.onload = function() {
                             });
                         } else {
                             $('#game-heading').text(opp.data().name + "Wins!");
-                            console.log(opp.data().name + ' Wins')
                             usrLosses++;
                             oppWins++;
 
@@ -407,10 +401,7 @@ window.onload = function() {
                                 console.error('Error updating document: ', error);
                             });
                         }
-                        $('#wins').text(' ' + usrWins);
-                        $('#losses').text(' ' + usrLosses);
                     }
-
                 } else {
                     $('#game-heading').text(opp.data().name + "'s Turn");
                 }
