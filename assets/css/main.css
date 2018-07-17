@@ -60,3 +60,6 @@ input:focus {
 
 #score {
   display: none; }
+
+#message {
+  display: none; }

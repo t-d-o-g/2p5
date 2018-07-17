@@ -59,7 +59,8 @@ window.onload = function() {
         console.log('Encountered error ', err);
     });
 
-    // Challenge/Accept interaction preceding Game (Needs Refactoring) 
+    // Challenge/Accept interaction preceding Game
+    // Needs refactoring and can probably be replaced with messaging
     fs.collection('users').onSnapshot(function(snapshot) {
         snapshot.docChanges().forEach(function(change) {
             var userRef = fs.collection('users').doc(change.doc.id);
@@ -119,7 +120,7 @@ window.onload = function() {
             available: true,
             connected: true,
             losses: 0,
-            message: "Play Game!",
+            message: null,
             myTurn: false,
             name: user,
             opponent: null,
@@ -152,6 +153,7 @@ window.onload = function() {
     function logout() {
         $('#game-heading').text('Enter Name to Play');
         $('#uname').show();
+        $('#message').hide();
         $('#opponents').hide();
         $('#submit-btn').text('Login');
     }
@@ -159,19 +161,26 @@ window.onload = function() {
     // Needs refactor
     function playGame(userId, oppId) {
         $('#opponents').hide();
-        // Heading should display user message
         var userRef = fs.collection('users').doc(userId);
         var oppRef = fs.collection('users').doc(oppId);
         var selectedRps = '';
+        var messageSent = null;
+        var messageReceived = null;
 
         userRef.get().then(function(usr) {
             oppRef.get().then(function(opp) {
                 if (usr.data().myTurn) {
+                    $('#message').show();
                     $('#img-rock').show();
                     $('#img-paper').show();
                     $('#img-scissors').show();
+                    $('#message-input').val('');
 
-                    $('#game-heading').text(usr.data().name + "'s Turn");
+                    if (opp.data().message) {
+                        $('#game-heading').text(opp.data().message);
+                    } else {
+                        $('#game-heading').text(usr.data().name + "'s Turn");
+                    }
 
                     $('img[id^="img-"]').hover(function() {
                         $(this).css('cursor', 'pointer');
@@ -181,9 +190,13 @@ window.onload = function() {
                         $('#img-paper').hide();
                         $('#img-scissors').hide();
                         selectedRps = 'r';
+                        if ($('#message-input').val()) {
+                            messageSent = $('#message-input').val();
+                        }
 
                         oppRef.update({
-                            myTurn: true, 
+                            message: null,
+                            myTurn: true 
                         }).then(function() {
                             console.log(opp.id + ' successfully updated');
                         }).catch(function (error) {
@@ -191,7 +204,8 @@ window.onload = function() {
                         });
 
                         userRef.update({
-                            myTurn: false, 
+                            message: messageSent,
+                            myTurn: false,
                             rps: selectedRps 
                         }).then(function() {
                             console.log(opp.id + ' successfully updated');
@@ -204,9 +218,13 @@ window.onload = function() {
                         $('#img-rock').hide();
                         $('#img-scissors').hide();
                         selectedRps = 'p';
+                        if ($('#message-input').val()) {
+                            messageSent = $('#message-input').val();
+                        }
 
                         oppRef.update({
-                            myTurn: true, 
+                            message: null,
+                            myTurn: true
                         }).then(function() {
                             console.log(opp.id + ' successfully updated');
                         }).catch(function (error) {
@@ -214,7 +232,8 @@ window.onload = function() {
                         });
 
                         userRef.update({
-                            myTurn: false, 
+                            message: messageSent,
+                            myTurn: false,
                             rps: selectedRps 
                         }).then(function() {
                             console.log(opp.id + ' successfully updated');
@@ -227,9 +246,13 @@ window.onload = function() {
                         $('#img-rock').hide();
                         $('#img-paper').hide();
                         selectedRps = 's';
+                        if ($('#message-input').val()) {
+                            messageSent = $('#message-input').val();
+                        }
 
                         oppRef.update({
-                            myTurn: true, 
+                            message: null,
+                            myTurn: true
                         }).then(function() {
                             console.log(opp.id + ' successfully updated');
                         }).catch(function (error) {
@@ -237,7 +260,8 @@ window.onload = function() {
                         });
 
                         userRef.update({
-                            myTurn: false, 
+                            message: messageSent,
+                            myTurn: false,
                             rps: selectedRps 
                         }).then(function() {
                             console.log(opp.id + ' successfully updated');
@@ -255,7 +279,7 @@ window.onload = function() {
                         var oppLosses = opp.data().losses;
 
                         if (usrRps === 'r' && oppRps === 's') {
-                            $('#game-heading').text(usr.data().name + "Wins!");
+                            // $('#game-heading').text(usr.data().name + "Wins!");
                             oppLosses++;
                             usrWins++;
 
@@ -277,7 +301,7 @@ window.onload = function() {
                                 console.error('Error updating document: ', error);
                             });
                         } else if (usrRps === 'p' && oppRps === 'r') {
-                            $('#game-heading').text(usr.data().name + "Wins!");
+                            // $('#game-heading').text(usr.data().name + "Wins!");
                             oppLosses++;
                             usrWins++;
 
@@ -299,7 +323,7 @@ window.onload = function() {
                                 console.error('Error updating document: ', error);
                             });
                         } else if (usrRps === 's' && oppRps === 'p') {
-                            $('#game-heading').text(usr.data().name + "Wins!");
+                            // $('#game-heading').text(usr.data().name + "Wins!");
                             oppLosses++;
                             usrWins++;
 
@@ -322,8 +346,7 @@ window.onload = function() {
                             });
 
                         } else if (usrRps === 'r' && oppRps === 'r') {
-                            $('#game-heading').text("It's a Tie!");
-                            console.log('It is a tie');
+                            // $('#game-heading').text("It's a Tie!");
 
                             oppRef.update({
                                 rps: null 
@@ -341,8 +364,7 @@ window.onload = function() {
                                 console.error('Error updating document: ', error);
                             });
                         } else if (usrRps === 'p' && oppRps === 'p') {
-                            $('#game-heading').text("It's a Tie!");
-                            console.log('It is a tie');
+                            // $('#game-heading').text("It's a Tie!");
 
                             oppRef.update({
                                 rps: null 
@@ -360,8 +382,7 @@ window.onload = function() {
                                 console.error('Error updating document: ', error);
                             });
                         } else if (usrRps === 's' && oppRps === 's') {
-                            $('#game-heading').text("It's a Tie!");
-                            console.log('It is a tie');
+                            // $('#game-heading').text("It's a Tie!");
 
                             oppRef.update({
                                 rps: null 
@@ -379,7 +400,7 @@ window.onload = function() {
                                 console.error('Error updating document: ', error);
                             });
                         } else {
-                            $('#game-heading').text(opp.data().name + "Wins!");
+                            // $('#game-heading').text(opp.data().name + "Wins!");
                             usrLosses++;
                             oppWins++;
 
@@ -479,6 +500,6 @@ window.onload = function() {
         $('#game-heading').text('Waiting for ' + $this.text() + ' to accept...');
         var id = $this.attr('id').split('opponent-id-')[1];
         challengeOpponent(id);
-        // Add 30 second timer here
+        // Add 10 second timer here
     })
  };

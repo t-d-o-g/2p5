@@ -82,6 +82,10 @@ input:focus {
     display: none;
 }
 
+#message {
+    display:none;
+}
+
 // Small devices (landscape phones, 300px and up)
 @media (min-width: 300px) {
 }
