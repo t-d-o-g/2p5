@@ -1,8 +1,3 @@
-/*
-Functionality that still needs to be implemented:
-- Need to implement messaging
-*/
-
 // init Firebase db
 var config = {
     apiKey: "AIzaSyDmVphIEhlwnC3eNLjADizUs_-22rPhFRE",
